@@ -9,7 +9,7 @@ export const GET = async (
 ): Promise<NextResponse<RecipeResponse | ErrorResponse>> => {
   try {
     const { searchParams } = new URL(request.url);
-    const mealDescription = searchParams.get("search");
+    const mealDescription = searchParams.get("description");
 
     if (!mealDescription || mealDescription.trim().length < 3) {
       return NextResponse.json(

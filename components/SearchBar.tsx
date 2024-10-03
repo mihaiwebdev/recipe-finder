@@ -34,6 +34,7 @@ const SearchBar = () => {
       fetchRecipes(description);
     },
     saveOnUnmount: false,
+    interval: 1500,
   });
 
   const fetchRecipes = async (description: string) => {
@@ -42,7 +43,7 @@ const SearchBar = () => {
 
     try {
       const response = await fetch(
-        `/api/recipes?search=${encodeURIComponent(description)}`
+        `/api/recipes/search?description=${encodeURIComponent(description)}`
       );
 
       if (!response.ok) {

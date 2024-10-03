@@ -11,6 +11,7 @@ const RecipesList = ({ recipes }: RecipeResponse) => {
   if (isLoading) {
     return (
       <div>
+        <p className="mb-2">Searching for the best recipes...</p>
         {[...Array(5)].map((_, idx) => (
           <RecipeLoader key={idx}></RecipeLoader>
         ))}
@@ -18,13 +19,13 @@ const RecipesList = ({ recipes }: RecipeResponse) => {
     );
   }
   return (
-    <div>
+    <section id="recipe-list">
       {recipes.map((recipe: Recipe, idx: number) => (
         <div key={idx}>
           <RecipeCard recipe={recipe} />
         </div>
       ))}
-    </div>
+    </section>
   );
 };
 

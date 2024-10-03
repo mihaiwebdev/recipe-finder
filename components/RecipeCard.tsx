@@ -9,16 +9,21 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const { setRecipe } = useContext(RecipesContext);
 
+  const addRecipe = () => {
+    setRecipe(recipe);
+    localStorage.setItem("recipeDetails", JSON.stringify(recipe));
+  };
+
   return (
     <Link
       href="recipe-details"
-      onClick={() => setRecipe(recipe)}
-      className="w-full bg-gray-100 mb-4 cursor-pointer drop-shadow-xl rounded-xl flex"
+      onClick={addRecipe}
+      className="w-full bg-gray-100 mb-4 cursor-pointer drop-shadow-lg rounded-xl flex"
     >
       <img
-        className="rounded-s-xl w-[88px] h-[88px]"
+        className="rounded-s-xl w-[88px] h-[88px] object-cover"
         alt="Recipe Image"
-        src="https://images.pexels.com/photos/8725380/pexels-photo-8725380.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        src="https://images.pexels.com/photos/19224336/pexels-photo-19224336/free-photo-of-market-stalls-in-street-of-palermo.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
       />
 
       <div className="ms-3 py-1">
@@ -29,7 +34,7 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
       {isFavorite ? (
         <FaHeart className="ms-auto my-auto me-4 text-xl text-purple-900" />
       ) : (
-        <FaRegHeart className="ms-auto my-auto me-4 text-xl text-purple-900" />
+        <FaRegHeart className="ms-auto my-auto me-4 text-xl text-gray-500" />
       )}
     </Link>
   );
