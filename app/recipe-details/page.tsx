@@ -1,12 +1,14 @@
 "use client";
 
+import ImageLoader from "@/components/ImageLoader";
 import RecipesContext from "@/store/recipeContext";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 const RecipeDetailsPage = () => {
+  const [isImageLoading, setIsImageLoading] = useState(true);
   const { recipe, setRecipe, addToFavorites, removeFromFavorites } =
     useContext(RecipesContext);
   const router = useRouter();
@@ -52,13 +54,20 @@ const RecipeDetailsPage = () => {
   return (
     <section className="px-6 flex flex-col py-16 max-w-[864px] mx-auto h-screen overflow-hidden  lg:flex-row lg:justify-between lg:px-0">
       <div className="w-full sm:w-3/4 mx-auto lg:w-[400px] lg:mx-0">
-        <Image
-          className="w-full mx-auto rounded-md object-cover"
-          width={1024}
-          height={1024}
-          alt="Meal Image"
-          src={recipe.mealImage}
-        />
+        <div className="relative w-full">
+          {isImageLoading && <ImageLoader />}
+          <Image
+            className={`w-full mx-auto rounded-md object-cover ${
+              isImageLoading ? "opacity-0" : "opacity-100"
+            }`}
+            width={1024}
+            height={1024}
+            alt="Meal Image"
+            src={recipe.mealImage}
+            onLoad={() => setIsImageLoading(false)}
+          />
+        </div>
+
         <div className="mt-10 flex items-center justify-center ">
           <div>
             <h2 className="font-bold text-md">{recipe.name}</h2>

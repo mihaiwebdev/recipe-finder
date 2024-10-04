@@ -82,10 +82,10 @@ const generateMealImage = async (
   const defaultPrompt = `A very photorealistic image of a ${mealName} meal with this ingredients: ${mealIngrendients}`;
 
   const response = await openai.images.generate({
-    model: "dall-e-3",
+    model: "dall-e-2",
     prompt: promptForImageGeneration || defaultPrompt,
     n: 1,
-    size: "1024x1024",
+    size: "512x512",
     style: "natural",
   });
 
@@ -102,7 +102,8 @@ const getPromptForImageGeneration = async (
       { role: "system", content: "You are a helpful assistant." },
       {
         role: "user",
-        content: `Write the best prompt in order to generate a very photorealistic image of ${mealName} with this ingredients: ${mealIngredients}`,
+        content: `Write the best prompt of maximum 900 characters, in order to generate a very photorealistic image of ${mealName} with this ingredients: ${mealIngredients}.
+        This is CRUCIAL!: Prompt length must be of maximum 900 characters.`,
       },
     ],
   });

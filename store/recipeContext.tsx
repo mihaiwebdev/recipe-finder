@@ -69,7 +69,6 @@ export const RecipesContextProvider = ({
 
   const addToFavorites = async (recipe: RecipeType) => {
     setFavoriteRecipes((value) => [...value, recipe]);
-    console.log("add to favorites", favoriteRecipes);
     try {
       const response = await fetch(`/api/recipes/favorites`, {
         method: "POST",
@@ -93,7 +92,6 @@ export const RecipesContextProvider = ({
     setFavoriteRecipes((value) => [
       ...value.filter((recipe) => recipe.id !== recipeID),
     ]);
-    console.log("remove from favorites", favoriteRecipes);
 
     try {
       const response = await fetch(`/api/recipes/favorites`, {

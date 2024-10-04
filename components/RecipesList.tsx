@@ -14,7 +14,9 @@ const RecipesList: React.FC<RecipeListProps> = ({ recipes }) => {
   if (isLoading) {
     return (
       <div>
-        <p className="mb-2">Searching for the best recipes...</p>
+        <p className="mb-2 animate-bounce">
+          Searching for the best recipes... (~20s)
+        </p>
         {[...Array(5)].map((_, idx) => (
           <RecipeLoader key={idx}></RecipeLoader>
         ))}
