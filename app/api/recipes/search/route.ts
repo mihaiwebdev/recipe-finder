@@ -4,12 +4,11 @@ import { RecipeResponse } from "@/types/recipeResponse";
 import { findRecipes } from "@/util/ai";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (
+export const POST = async (
   request: NextRequest
 ): Promise<NextResponse<RecipeResponse | ErrorResponse>> => {
   try {
-    const { searchParams } = new URL(request.url);
-    const mealDescription = searchParams.get("description");
+    const { mealDescription, excludedRecipes } = await request.json();
 
     if (!mealDescription || mealDescription.trim().length < 3) {
       return NextResponse.json(
@@ -18,7 +17,7 @@ export const GET = async (
       );
     }
 
-    const response = await findRecipes(mealDescription);
+    const response = await findRecipes(mealDescription, excludedRecipes);
 
     if (!response) {
       return NextResponse.json(

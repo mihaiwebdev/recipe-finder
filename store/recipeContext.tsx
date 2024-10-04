@@ -39,14 +39,17 @@ export const RecipesContextProvider = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isFavoritesVisible, setIsFavoritesVisible] = useState(true);
 
-  const fetchRecipes = async (description: string) => {
+  const fetchRecipes = async (
+    mealDescription: string,
+    excludedRecipes: string[]
+  ) => {
     setIsLoading(true);
     setIsFavoritesVisible(false);
-
     try {
-      const response = await fetch(
-        `/api/recipes/search?description=${encodeURIComponent(description)}`
-      );
+      const response = await fetch(`/api/recipes/search`, {
+        method: "POST",
+        body: JSON.stringify({ mealDescription, excludedRecipes }),
+      });
 
       if (!response.ok) {
         const errorData: ErrorResponse = await response.json();

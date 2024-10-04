@@ -76,12 +76,12 @@ const RecipeDetailsPage = () => {
 
           {recipe.isFavorite ? (
             <FaHeart
-              onClick={() => removeFromFavorite()}
+              onClick={removeFromFavorite}
               className="ms-auto my-auto me-4 text-xl text-appPurple cursor-pointer"
             />
           ) : (
             <FaRegHeart
-              onClick={() => addToFavorite()}
+              onClick={addToFavorite}
               className="ms-auto my-auto me-4 text-xl text-gray-500 cursor-pointer"
             />
           )}

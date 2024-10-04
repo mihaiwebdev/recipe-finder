@@ -33,7 +33,7 @@ const SearchBar = () => {
         return;
       }
 
-      fetchRecipes(description);
+      fetchRecipes(description, []);
     },
     saveOnUnmount: false,
     interval: 1000,

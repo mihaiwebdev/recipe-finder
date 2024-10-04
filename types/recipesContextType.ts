@@ -14,7 +14,7 @@ export class RecipesContextType {
     public setIsLoading: (isLoading: boolean) => void,
     public setRecipes: (recipes: RecipeType[]) => void,
     public setFavoriteRecipes: (recipes: RecipeType[]) => void,
-    public fetchRecipes: (description: string) => void,
+    public fetchRecipes: (description: string, excludedMeals: string[]) => void,
     public addToFavorites: (recipe: RecipeType) => void,
     public removeFromFavorites: (recipeID: string) => void
   ) {}

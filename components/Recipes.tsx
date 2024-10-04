@@ -37,6 +37,11 @@ const Recipes: React.FC<RecipesProps> = ({ favoriteRecipesStr }) => {
     }
   }, [setDisplayedRecipes, isFavoritesVisible, recipes, favoriteRecipes]);
 
+  const handleFetchRecipes = () => {
+    const excludedRecipes = recipes.map((recipe) => recipe.name);
+    fetchRecipes(mealDescription, excludedRecipes);
+  };
+
   return (
     <div className="mt-16">
       {isFavoritesVisible ? (
@@ -52,7 +57,7 @@ const Recipes: React.FC<RecipesProps> = ({ favoriteRecipesStr }) => {
       <RecipesList recipes={displayedRecipes} />
       {recipes && !isFavoritesVisible && !isLoading && (
         <button
-          onClick={() => fetchRecipes(mealDescription)}
+          onClick={handleFetchRecipes}
           className="bg-appPurple text-white px-8 mx-auto block mt-10 rounded-lg py-3 hover:scale-95 transition-transform"
         >
           I don&apos;t like these
