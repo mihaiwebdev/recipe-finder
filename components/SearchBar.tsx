@@ -1,12 +1,11 @@
 "use client";
 import RecipesContext from "@/store/recipeContext";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { useAutosave } from "react-autosave";
 import { IoClose, IoSearch } from "react-icons/io5";
 import { toast } from "react-toastify";
 
 const SearchBar = () => {
-  const [isFirstChange, setIsFirstChange] = useState(true);
   const {
     mealDescription,
     isLoading,
@@ -18,10 +17,7 @@ const SearchBar = () => {
   useAutosave({
     data: mealDescription,
     onSave: async (description) => {
-      if (isFirstChange) {
-        setIsFirstChange(false);
-        return;
-      }
+      console.log(description);
 
       if (description.length === 0) {
         setIsFavoritesVisible(true);
