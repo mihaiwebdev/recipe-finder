@@ -96,6 +96,7 @@ const generateMealImage = async (
   const input = {
     prompt: promptForImageGeneration || defaultPrompt,
     guidance: 3.5,
+    disable_safety_checker: true,
   };
 
   const output = (await replicate.run(
@@ -118,8 +119,7 @@ const getPromptForImageGeneration = async (
         role: "user",
         content: `Write the best prompt of maximum 900 characters, in order to generate a very photorealistic image of ${mealName} with this ingredients: ${mealIngredients}.
         Important!: Prompt length must be of maximum 900 characters.
-        Crucial!: Prompt must be safe and mustn't violate any content_policy_violation.
-        Remove anything that may violate the content policy.`,
+        Crucial!: Make sure the prompt is SAFE FOR WORK. Don't return NSFW content, remove anything that may violate that.`,
       },
     ],
   });
