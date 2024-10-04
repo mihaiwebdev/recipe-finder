@@ -1,41 +1,18 @@
 "use client";
 import RecipesList from "@/components/RecipesList";
 import RecipesContext from "@/store/recipeContext";
-import { RecipeType } from "@/types/recipeResponse";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext } from "react";
 
-interface RecipesProps {
-  favoriteRecipesStr: string;
-}
-
-const Recipes: React.FC<RecipesProps> = ({ favoriteRecipesStr }) => {
+const Recipes = () => {
   const {
     isFavoritesVisible,
+    isFavoritesLoading,
     recipes,
     favoriteRecipes,
     isLoading,
     mealDescription,
     fetchRecipes,
-    setFavoriteRecipes,
   } = useContext(RecipesContext);
-  const [displayedRecipes, setDisplayedRecipes] = useState<RecipeType[]>([]);
-  const initializedRef = useRef(false);
-
-  useEffect(() => {
-    if (!initializedRef.current && favoriteRecipes.length === 0) {
-      const serializedRecipes: RecipeType[] = JSON.parse(favoriteRecipesStr);
-      setFavoriteRecipes(serializedRecipes);
-      initializedRef.current = true;
-    }
-  }, [setFavoriteRecipes, favoriteRecipesStr, favoriteRecipes]);
-
-  useEffect(() => {
-    if (isFavoritesVisible) {
-      setDisplayedRecipes(favoriteRecipes);
-    } else {
-      setDisplayedRecipes(recipes);
-    }
-  }, [setDisplayedRecipes, isFavoritesVisible, recipes, favoriteRecipes]);
 
   const handleFetchRecipes = () => {
     const excludedRecipes = recipes.map((recipe) => recipe.name);
@@ -50,11 +27,20 @@ const Recipes: React.FC<RecipesProps> = ({ favoriteRecipesStr }) => {
         <h1 className="font-extrabold text-3xl mb-4">Suggested recipes</h1>
       )}
 
-      {isFavoritesVisible && favoriteRecipes.length < 1 && (
-        <p>Right now, you don&apos;t have any favorite recipe.</p>
+      {isFavoritesLoading && (
+        <p className="mb-2 animate-bounce">Fetching favorite recipes...</p>
       )}
+      {isFavoritesVisible &&
+        !isFavoritesLoading &&
+        favoriteRecipes.length < 1 && (
+          <p>Right now, you don&apos;t have any favorite recipe.</p>
+        )}
 
-      <RecipesList recipes={displayedRecipes} />
+      {isFavoritesVisible ? (
+        <RecipesList recipes={favoriteRecipes} />
+      ) : (
+        <RecipesList recipes={recipes} />
+      )}
       {recipes && !isFavoritesVisible && !isLoading && (
         <button
           onClick={handleFetchRecipes}

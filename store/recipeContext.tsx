@@ -1,15 +1,17 @@
 "use client";
 import { RecipesContextType } from "@/types/recipesContextType";
 import { RecipeType, RecipeResponse } from "@/types/recipeResponse";
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 import { ErrorResponse } from "@/types/errorResponse";
 import { toast } from "react-toastify";
+import { FavoriteRecipesResponse } from "@/types/favoriteRecipesResponse";
 
 const initialRecipesCtxState = new RecipesContextType(
   [],
   [],
   undefined,
   false,
+  true,
   true,
   "",
   () => {},
@@ -37,7 +39,36 @@ export const RecipesContextProvider = ({
   const [favoriteRecipes, setFavoriteRecipes] = useState<RecipeType[]>([]);
   const [recipe, setRecipe] = useState<RecipeType>();
   const [isLoading, setIsLoading] = useState(false);
+  const [isFavoritesLoading, setIsFavoritesLoading] = useState(true);
   const [isFavoritesVisible, setIsFavoritesVisible] = useState(true);
+
+  useEffect(() => {
+    getFavoriteRecipes();
+  }, []);
+
+  const getFavoriteRecipes = async () => {
+    setIsFavoritesLoading(true);
+    try {
+      const response = await fetch(`/api/recipes/favorites`);
+
+      if (!response.ok) {
+        const errorData: ErrorResponse = await response.json();
+        throw new Error(errorData.errorMessage);
+      }
+
+      const data: FavoriteRecipesResponse = await response.json();
+
+      setFavoriteRecipes(data.favoriteRecipes);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("Failed to get favorite recipes. Please try again.");
+      }
+    } finally {
+      setIsFavoritesLoading(false);
+    }
+  };
 
   const fetchRecipes = async (
     mealDescription: string,
@@ -120,6 +151,7 @@ export const RecipesContextProvider = ({
       value={{
         recipes,
         isLoading,
+        isFavoritesLoading,
         isFavoritesVisible,
         recipe,
         favoriteRecipes,

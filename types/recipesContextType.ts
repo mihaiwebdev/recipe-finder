@@ -6,6 +6,7 @@ export class RecipesContextType {
     public favoriteRecipes: RecipeType[],
     public recipe: RecipeType | undefined,
     public isLoading: boolean,
+    public isFavoritesLoading: boolean,
     public isFavoritesVisible: boolean,
     public mealDescription: string,
     public setMealDescription: (description: string) => void,

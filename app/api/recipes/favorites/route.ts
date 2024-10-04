@@ -3,6 +3,20 @@ import { ErrorResponse } from "@/types/errorResponse";
 import connectDB from "@/util/db";
 import { NextRequest, NextResponse } from "next/server";
 
+export const GET = async () => {
+  try {
+    await connectDB();
+    const favoriteRecipes = await Recipe.find({}).lean();
+
+    return NextResponse.json({ favoriteRecipes });
+  } catch (error) {
+    console.error("Error adding recipe to favorites", error);
+    return NextResponse.json(new ErrorResponse("Failed to add to favorites."), {
+      status: 500,
+    });
+  }
+};
+
 export const POST = async (request: NextRequest) => {
   try {
     const { recipe } = await request.json();
