@@ -117,7 +117,9 @@ const getPromptForImageGeneration = async (
       {
         role: "user",
         content: `Write the best prompt of maximum 900 characters, in order to generate a very photorealistic image of ${mealName} with this ingredients: ${mealIngredients}.
-        This is CRUCIAL!: Prompt length must be of maximum 900 characters.`,
+        Important!: Prompt length must be of maximum 900 characters.
+        Crucial!: Prompt must be safe and mustn't violate any content_policy_violation that DALLE API has.
+        Remove anything that may violate the content policy.`,
       },
     ],
   });

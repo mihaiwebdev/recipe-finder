@@ -17,8 +17,6 @@ const SearchBar = () => {
   useAutosave({
     data: mealDescription,
     onSave: async (description) => {
-      console.log(description);
-
       if (description.length === 0) {
         setIsFavoritesVisible(true);
         return;
