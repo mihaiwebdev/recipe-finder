@@ -1,7 +1,7 @@
 "use client";
 import RecipesList from "@/components/RecipesList";
 import RecipesContext from "@/store/recipeContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 const Recipes = () => {
   const {
@@ -13,10 +13,16 @@ const Recipes = () => {
     mealDescription,
     fetchRecipes,
   } = useContext(RecipesContext);
+  const [excludedRecipes, setExcludedRecipes] = useState<string[]>([]);
 
   const handleFetchRecipes = () => {
-    const excludedRecipes = recipes.map((recipe) => recipe.name);
-    fetchRecipes(mealDescription, excludedRecipes);
+    const newExcludedRecipes = [
+      ...excludedRecipes,
+      ...recipes.map((recipe) => recipe.name),
+    ];
+
+    setExcludedRecipes(newExcludedRecipes);
+    fetchRecipes(mealDescription, newExcludedRecipes);
   };
 
   return (

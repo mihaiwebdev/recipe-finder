@@ -29,23 +29,16 @@ const Recipes = z.object({
   recipes: z.array(Recipe),
 });
 
-const allExcludedMeals: string[] = [];
-
 export const findRecipes = async (
   description: string,
   excludedMeals: string[]
 ): Promise<RecipeResponse | null> => {
-  if (excludedMeals.length > 0) {
-    allExcludedMeals.push(...excludedMeals);
-  }
-
   let userMessage = description;
-  if (allExcludedMeals.length > 0) {
-    userMessage = `${description}, make sure to exclude these dishes: ${allExcludedMeals.join(
+  if (excludedMeals.length > 0) {
+    userMessage = `${description}, make sure to exclude these dishes: ${excludedMeals.join(
       ","
     )}`;
   }
-
   const completion = await openai.beta.chat.completions.parse({
     model: "gpt-4o-mini",
     messages: [
