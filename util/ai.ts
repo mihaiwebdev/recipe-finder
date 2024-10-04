@@ -4,7 +4,12 @@ import { zodResponseFormat } from "openai/helpers/zod.mjs";
 import { z } from "zod";
 import { randomUUID } from "crypto";
 import { LlmRecipe, LlmRecipeResponse } from "@/types/llmRecipeResponse";
+import Replicate from "replicate";
+
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const replicate = new Replicate({
+  auth: process.env.REPLICATE_API_TOKEN,
+});
 
 const Recipe = z.object({
   name: z.string().describe("Short name of the recipe."),
@@ -95,15 +100,17 @@ const generateMealImage = async (
   );
   const defaultPrompt = `A very photorealistic image of a ${mealName} meal with this ingredients: ${mealIngrendients}`;
 
-  const response = await openai.images.generate({
-    model: "dall-e-2",
+  const input = {
     prompt: promptForImageGeneration || defaultPrompt,
-    n: 1,
-    size: "512x512",
-    style: "natural",
-  });
+    guidance: 3.5,
+  };
 
-  return response.data[0].url || "";
+  const output = (await replicate.run(
+    "bytedance/sdxl-lightning-4step:5599ed30703defd1d160a25a63321b4dec97101d98b4674bcc56e41f62f35637",
+    { input }
+  )) as string[];
+
+  return output[0] || "";
 };
 
 const getPromptForImageGeneration = async (
@@ -118,7 +125,7 @@ const getPromptForImageGeneration = async (
         role: "user",
         content: `Write the best prompt of maximum 900 characters, in order to generate a very photorealistic image of ${mealName} with this ingredients: ${mealIngredients}.
         Important!: Prompt length must be of maximum 900 characters.
-        Crucial!: Prompt must be safe and mustn't violate any content_policy_violation that DALLE API has.
+        Crucial!: Prompt must be safe and mustn't violate any content_policy_violation.
         Remove anything that may violate the content policy.`,
       },
     ],
