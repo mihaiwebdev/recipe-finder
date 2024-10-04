@@ -1,29 +1,17 @@
-"use client";
-import RecipesList from "@/components/RecipesList";
+import Recipes from "@/components/Recipes";
 import SearchBar from "@/components/SearchBar";
-import RecipesContext from "@/store/recipeContext";
-import { useContext } from "react";
+import Recipe from "@/models/Recipe";
+import connectDB from "@/util/db";
 
-export default function Home() {
-  const { isFavoritesVisible, recipes } = useContext(RecipesContext);
+export default async function Home() {
+  await connectDB();
+  const favoriteRecipes = await Recipe.find({}).lean();
 
   return (
     <div className="w-full px-6 block mx-auto py-16 sm:w-96 sm:px-0">
       <SearchBar />
 
-      <div className="mt-16">
-        {isFavoritesVisible ? (
-          <h1 className="font-extrabold text-3xl mb-4">Favorites</h1>
-        ) : (
-          <h1 className="font-extrabold text-3xl mb-4">Suggested recipes</h1>
-        )}
-
-        {isFavoritesVisible && recipes.length < 1 && (
-          <p>Right now, you don&apos;t have any favorite recipe.</p>
-        )}
-
-        <RecipesList recipes={recipes} />
-      </div>
+      <Recipes favoriteRecipesStr={JSON.stringify(favoriteRecipes)} />
     </div>
   );
 }

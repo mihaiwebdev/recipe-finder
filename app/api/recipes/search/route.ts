@@ -1,8 +1,9 @@
-import { ErrorResponse } from "@/models/errorResponse";
-import { RecipeResponse } from "@/models/recipeResponse";
+import { ErrorResponse } from "@/types/errorResponse";
+import { RecipeResponse } from "@/types/recipeResponse";
 
 import { findRecipes } from "@/util/ai";
 import { NextRequest, NextResponse } from "next/server";
+import { randomUUID } from "crypto";
 
 export const GET = async (
   request: NextRequest
@@ -18,16 +19,23 @@ export const GET = async (
       );
     }
 
-    const recipes = await findRecipes(mealDescription);
+    let response = await findRecipes(mealDescription);
 
-    if (!recipes) {
+    if (!response) {
       return NextResponse.json(
         new ErrorResponse("Could not find any recipes. Please try again!"),
         { status: 400 }
       );
     }
 
-    return NextResponse.json(recipes);
+    response = {
+      recipes: response.recipes.map((recipe) => ({
+        ...recipe,
+        id: randomUUID(),
+      })),
+    };
+
+    return NextResponse.json(response);
   } catch (error) {
     console.error("Error fetching recipes:", error);
 

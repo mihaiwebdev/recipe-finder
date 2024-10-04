@@ -1,6 +1,4 @@
 "use client";
-import { ErrorResponse } from "@/models/errorResponse";
-import { RecipeResponse } from "@/models/recipeResponse";
 import RecipesContext from "@/store/recipeContext";
 import { useContext, useState } from "react";
 import { useAutosave } from "react-autosave";
@@ -13,9 +11,8 @@ const SearchBar = () => {
     mealDescription,
     isLoading,
     setMealDescription,
-    setIsLoading,
-    setRecipes,
     setIsFavoritesVisible,
+    fetchRecipes,
   } = useContext(RecipesContext);
 
   useAutosave({
@@ -23,6 +20,11 @@ const SearchBar = () => {
     onSave: async (description) => {
       if (isFirstChange) {
         setIsFirstChange(false);
+        return;
+      }
+
+      if (description.length === 0) {
+        setIsFavoritesVisible(true);
         return;
       }
 
@@ -34,36 +36,8 @@ const SearchBar = () => {
       fetchRecipes(description);
     },
     saveOnUnmount: false,
-    interval: 1500,
+    interval: 1000,
   });
-
-  const fetchRecipes = async (description: string) => {
-    setIsLoading(true);
-    setIsFavoritesVisible(false);
-
-    try {
-      const response = await fetch(
-        `/api/recipes/search?description=${encodeURIComponent(description)}`
-      );
-
-      if (!response.ok) {
-        const errorData: ErrorResponse = await response.json();
-        throw new Error(errorData.errorMessage);
-      }
-
-      const data: RecipeResponse = await response.json();
-
-      setRecipes(data.recipes);
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      } else {
-        toast.error("Failed to fetch recipes. Please try again.");
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const clearInput = () => {
     if (!isLoading) {

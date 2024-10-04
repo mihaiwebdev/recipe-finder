@@ -1,11 +1,14 @@
 "use client";
-import { Recipe, RecipeResponse } from "@/models/recipeResponse";
 import RecipesContext from "@/store/recipeContext";
+import { RecipeType } from "@/types/recipeResponse";
 import { useContext } from "react";
 import RecipeCard from "./RecipeCard";
 import RecipeLoader from "./RecipeLoader";
 
-const RecipesList = ({ recipes }: RecipeResponse) => {
+interface RecipeListProps {
+  recipes: RecipeType[];
+}
+const RecipesList: React.FC<RecipeListProps> = ({ recipes }) => {
   const { isLoading } = useContext(RecipesContext);
 
   if (isLoading) {
@@ -20,7 +23,7 @@ const RecipesList = ({ recipes }: RecipeResponse) => {
   }
   return (
     <section id="recipe-list">
-      {recipes.map((recipe: Recipe, idx: number) => (
+      {recipes.map((recipe: RecipeType, idx: number) => (
         <div key={idx}>
           <RecipeCard recipe={recipe} />
         </div>

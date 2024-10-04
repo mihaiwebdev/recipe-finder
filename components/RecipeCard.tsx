@@ -1,24 +1,40 @@
 "use client";
-import { Recipe } from "@/models/recipeResponse";
 import RecipesContext from "@/store/recipeContext";
+import { RecipeType } from "@/types/recipeResponse";
 import Link from "next/link";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 
-const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
-  const [isFavorite, setIsFavorite] = useState(false);
-  const { setRecipe } = useContext(RecipesContext);
+interface RecipeProps {
+  recipe: RecipeType;
+}
 
-  const addRecipe = () => {
+const RecipeCard: React.FC<RecipeProps> = ({ recipe }) => {
+  const { setRecipe, addToFavorites, removeFromFavorites } =
+    useContext(RecipesContext);
+
+  const setRecipeDetails = () => {
     setRecipe(recipe);
     localStorage.setItem("recipeDetails", JSON.stringify(recipe));
+  };
+
+  const addToFavorite = (e: React.MouseEvent<SVGElement, MouseEvent>) => {
+    e.preventDefault();
+    recipe.isFavorite = true;
+    addToFavorites(recipe);
+  };
+
+  const removeFromFavorite = (e: React.MouseEvent<SVGElement, MouseEvent>) => {
+    e.preventDefault();
+    recipe.isFavorite = false;
+    removeFromFavorites(recipe.id);
   };
 
   return (
     <Link
       href="recipe-details"
-      onClick={addRecipe}
-      className="w-full bg-gray-100 mb-4 cursor-pointer drop-shadow-lg rounded-xl flex"
+      onClick={setRecipeDetails}
+      className="w-full bg-gray-100 mb-4 cursor-pointer drop-shadow-lg rounded-xl flex hover:scale-95 transition-transform"
     >
       <img
         className="rounded-s-xl w-[88px] h-[88px] object-cover"
@@ -31,10 +47,16 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
         <p className="mt-1">{recipe.cookingTime} min.</p>
       </div>
 
-      {isFavorite ? (
-        <FaHeart className="ms-auto my-auto me-4 text-xl text-purple-900" />
+      {recipe.isFavorite ? (
+        <FaHeart
+          onClick={removeFromFavorite}
+          className="ms-auto my-auto me-4 text-xl text-appPurple"
+        />
       ) : (
-        <FaRegHeart className="ms-auto my-auto me-4 text-xl text-gray-500" />
+        <FaRegHeart
+          onClick={addToFavorite}
+          className="ms-auto my-auto me-4 text-xl text-gray-500"
+        />
       )}
     </Link>
   );

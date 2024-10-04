@@ -2,7 +2,7 @@ const RecipeLoader = () => {
   return (
     <div className="w-full bg-gray-100 mb-4 cursor-pointer drop-shadow-xl rounded-xl flex animate-pulse">
       <div className="w-[88px] h-[88px] bg-gray-300 rounded-s-xl" />
-      <div className="ms-3 py-1 flex-grow">
+      <div className="ms-3 py-2 flex-grow">
         <div className="h-4 bg-gray-300 rounded w-3/4 mb-2" />
         <div className="h-3 bg-gray-300 rounded w-1/4" />
       </div>

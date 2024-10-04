@@ -2,12 +2,12 @@
 
 import RecipesContext from "@/store/recipeContext";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 const RecipeDetailsPage = () => {
-  const { recipe, setRecipe } = useContext(RecipesContext);
-  const [isFavorite, setIsFavorite] = useState(false);
+  const { recipe, setRecipe, addToFavorites, removeFromFavorites } =
+    useContext(RecipesContext);
   const router = useRouter();
 
   useEffect(() => {
@@ -21,6 +21,24 @@ const RecipeDetailsPage = () => {
       }
     }
   }, [recipe, setRecipe, router]);
+
+  const addToFavorite = () => {
+    if (!recipe) {
+      return;
+    }
+    recipe.isFavorite = true;
+    localStorage.setItem("recipeDetails", JSON.stringify(recipe));
+    addToFavorites(recipe);
+  };
+
+  const removeFromFavorite = () => {
+    if (!recipe) {
+      return;
+    }
+    recipe.isFavorite = false;
+    localStorage.setItem("recipeDetails", JSON.stringify(recipe));
+    removeFromFavorites(recipe.id);
+  };
 
   if (!recipe) {
     return (
@@ -41,14 +59,20 @@ const RecipeDetailsPage = () => {
 
         <div className="mt-10 flex items-center justify-center ">
           <div>
-            <h2 className="font-bold text-md">{recipe?.name}</h2>
-            <p className="mt-1">{recipe?.cookingTime} min.</p>
+            <h2 className="font-bold text-md">{recipe.name}</h2>
+            <p className="mt-1">{recipe.cookingTime} min.</p>
           </div>
 
-          {isFavorite ? (
-            <FaHeart className="ms-auto my-auto me-4 text-xl text-purple-900" />
+          {recipe.isFavorite ? (
+            <FaHeart
+              onClick={() => removeFromFavorite()}
+              className="ms-auto my-auto me-4 text-xl text-appPurple cursor-pointer"
+            />
           ) : (
-            <FaRegHeart className="ms-auto my-auto me-4 text-xl text-gray-500" />
+            <FaRegHeart
+              onClick={() => addToFavorite()}
+              className="ms-auto my-auto me-4 text-xl text-gray-500 cursor-pointer"
+            />
           )}
         </div>
       </div>
@@ -57,7 +81,7 @@ const RecipeDetailsPage = () => {
         <div>
           <p>Ingredients:</p>
           <ul className="list-disc ps-5">
-            {recipe?.ingredients.map((instruction, idx) => (
+            {recipe.ingredients.map((instruction, idx) => (
               <li key={idx}>{instruction}</li>
             ))}
           </ul>
@@ -66,7 +90,7 @@ const RecipeDetailsPage = () => {
         <div className="mt-12">
           <p>Instructions:</p>
           <ol className="list-decimal  ps-5">
-            {recipe?.instructions.map((instruction, idx) => (
+            {recipe.instructions.map((instruction, idx) => (
               <li className="mb-2" key={idx}>
                 {instruction}
               </li>
