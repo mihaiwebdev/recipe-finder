@@ -1,6 +1,7 @@
 "use client";
 
 import RecipesContext from "@/store/recipeContext";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
@@ -51,12 +52,13 @@ const RecipeDetailsPage = () => {
   return (
     <section className="px-6 flex flex-col py-16 max-w-[864px] mx-auto h-screen overflow-hidden  lg:flex-row lg:justify-between lg:px-0">
       <div className="w-full sm:w-3/4 mx-auto lg:w-[400px] lg:mx-0">
-        <img
-          src="https://images.pexels.com/photos/8725380/pexels-photo-8725380.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-          alt=""
-          className="w-full mx-auto rounded-md"
+        <Image
+          className="w-full mx-auto rounded-md object-cover"
+          width={1024}
+          height={1024}
+          alt="Meal Image"
+          src={recipe.mealImage}
         />
-
         <div className="mt-10 flex items-center justify-center ">
           <div>
             <h2 className="font-bold text-md">{recipe.name}</h2>

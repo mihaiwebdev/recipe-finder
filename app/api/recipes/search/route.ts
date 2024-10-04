@@ -3,7 +3,6 @@ import { RecipeResponse } from "@/types/recipeResponse";
 
 import { findRecipes } from "@/util/ai";
 import { NextRequest, NextResponse } from "next/server";
-import { randomUUID } from "crypto";
 
 export const GET = async (
   request: NextRequest
@@ -19,7 +18,7 @@ export const GET = async (
       );
     }
 
-    let response = await findRecipes(mealDescription);
+    const response = await findRecipes(mealDescription);
 
     if (!response) {
       return NextResponse.json(
@@ -27,13 +26,6 @@ export const GET = async (
         { status: 400 }
       );
     }
-
-    response = {
-      recipes: response.recipes.map((recipe) => ({
-        ...recipe,
-        id: randomUUID(),
-      })),
-    };
 
     return NextResponse.json(response);
   } catch (error) {

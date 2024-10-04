@@ -1,6 +1,7 @@
 "use client";
 import RecipesContext from "@/store/recipeContext";
 import { RecipeType } from "@/types/recipeResponse";
+import Image from "next/image";
 import Link from "next/link";
 import { useContext } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
@@ -36,13 +37,15 @@ const RecipeCard: React.FC<RecipeProps> = ({ recipe }) => {
       onClick={setRecipeDetails}
       className="w-full bg-gray-100 mb-4 cursor-pointer drop-shadow-lg rounded-xl flex hover:scale-95 transition-transform"
     >
-      <img
-        className="rounded-s-xl w-[88px] h-[88px] object-cover"
-        alt="Recipe Image"
-        src="https://images.pexels.com/photos/19224336/pexels-photo-19224336/free-photo-of-market-stalls-in-street-of-palermo.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+      <Image
+        className="rounded-s-xl object-cover"
+        width={88}
+        height={88}
+        alt="Meal Image"
+        src={recipe.mealImage}
       />
 
-      <div className="ms-3 py-1">
+      <div className="ms-3 py-1 w-2/3">
         <h2 className="font-bold text-md">{recipe.name}</h2>
         <p className="mt-1">{recipe.cookingTime} min.</p>
       </div>
