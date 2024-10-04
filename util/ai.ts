@@ -4,7 +4,7 @@ import { zodResponseFormat } from "openai/helpers/zod.mjs";
 import { z } from "zod";
 import { randomUUID } from "crypto";
 import { LlmRecipe, LlmRecipeResponse } from "@/types/llmRecipeResponse";
-const openai = new OpenAI();
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const Recipe = z.object({
   name: z.string().describe("Short name of the recipe."),
