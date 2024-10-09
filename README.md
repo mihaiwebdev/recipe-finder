@@ -14,7 +14,7 @@ AI Recipe Finder is a Next.js application that helps users discover and manage r
 First, clone the repository and install the dependencies:
 
 ```bash
-git clone https://github.com/your-username/ai-recipe-finder.git
+git clone https://github.com/mihaiwebdev/ai-recipe-finder.git
 cd ai-recipe-finder
 npm install
 ```
