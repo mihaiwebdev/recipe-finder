@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Recipe Finder
+
+AI Recipe Finder is a Next.js application that helps users discover and manage recipes using AI-powered search.
+
+## Features
+
+- AI-powered recipe search based on meal descriptions
+- Favorite recipes management
+- Detailed recipe view with ingredients and instructions
+- Responsive design for mobile and desktop
 
 ## Getting Started
 
-First, run the development server:
+First, clone the repository and install the dependencies:
+
+```bash
+git clone https://github.com/your-username/ai-recipe-finder.git
+cd ai-recipe-finder
+npm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `app/`: Next.js app router pages
+- `components/`: React components
+- `store/`: Context for state management
+- `types/`: TypeScript type definitions
+
+## Key Components
+
+- `SearchBar`: Allows users to input meal descriptions for recipe search
+- `Recipes`: Displays search results or favorite recipes
+- `RecipeCard`: Individual recipe display with favorite toggle
+- `RecipeDetails`: Detailed view of a selected recipe
+
+## State Management
+
+The project uses React Context (`RecipesContext`) for state management, handling:
+
+- Recipe search results
+- Favorite recipes
+- Loading states
+- Current recipe details
+
+## API Routes
+
+The project assumes the existence of API routes for:
+
+- Searching recipes
+- Managing favorite recipes
+
+Ensure these are implemented in the `app/api/` directory.
+
+## Styling
+
+The project uses Tailwind CSS for styling. Custom styles can be added in the `tailwind.config.js` file.
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+To learn more about the technologies used in this project, check out the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Next.js Documentation](https://nextjs.org/docs)
+- [React Documentation](https://reactjs.org/docs/getting-started.html)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
+## Deployment
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Check out the [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
